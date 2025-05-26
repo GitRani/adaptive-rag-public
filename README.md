@@ -1,7 +1,7 @@
 # Adaptive RAG 실습
 
 ## 개요
-이 프로젝트는 Adaptive RAG(Retrieval-Augmented Generation) 구현을 위한 실습 프로젝트입니다.  
+이 프로젝트는 Adaptive RAG(Retrieval-Augmented Generation) 구현을 위한 실습 프로젝트입니다. 
 다양한 기술 스택을 활용하여 워크플로우를 구성하며, LangGraph를 중심으로 RAG 체인을 구현합니다.
 
 - **참고 코드**: [LangChain-KR Adaptive RAG](https://github.com/teddylee777/langchain-kr/blob/main/17-LangGraph/02-Structures/07-LangGraph-Adaptive-RAG.ipynb)
@@ -16,6 +16,9 @@
 ## 디렉토리 구조 (2025.05.26 기준)
 ```plaintext
 adaptive-rag-public/
+│
+├── routers/                   # FastAPI
+│   ├── api.py
 │
 ├── chains/                   # 체인 관련 로직 (재사용 가능한 체인 정의)
 │   ├── __init__.py
