@@ -1,0 +1,8 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "adaptive_rag": "main:app"
+  },
+  "env": ".env",
+  "python_version": "3.11"
+}
