@@ -67,9 +67,12 @@ adaptive-rag-public/
 3.
 To-do
 - FAISS -> Milvus 변경
-- Dockerizing
+- Dockerizing (Dockefile, docker-compose)
 - batch structure
 - postgresaver
+- managing message stack (improving state schema)
+- infinite loop remove
+
 
 
 4.
