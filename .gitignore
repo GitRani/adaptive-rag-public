@@ -4,3 +4,4 @@
 /utils/logger/log_manager_file.py
 /utils/logger/logger.py
 /vectorstore/data
+/unit_test/data

@@ -1,3 +1,4 @@
+# 재사용 가능 함수 정의
 def format_docs(docs):
     return "\n".join(
         [
@@ -5,6 +6,7 @@ def format_docs(docs):
             for doc in docs
         ]
     )
+
 
 def format_searched_docs(docs):
     return "\n".join(

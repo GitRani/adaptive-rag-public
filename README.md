@@ -111,17 +111,17 @@ adaptive-rag-public/
 ├── main.py                   # 워크플로우 실행 진입점
 └── requirements.txt          # 필요한 패키지 목록
 
-
+```
 
 3.
 To-do
 - FAISS -> Milvus 변경
+  ㄴ keyword : postgreSQL FTS, semantic: Milvus
 - Dockerizing (Dockefile, docker-compose)
 - batch structure
 - postgresaver
 - managing message stack (improving state schema)
 - infinite loop remove
-
 
 
 4.
@@ -130,3 +130,5 @@ Execute Server Info
 - uvicorn main:app --reload (main.py 위치에서 실행)
 
 
+5. 
+기타 이슈 해결사항은 issue 탭에 게시

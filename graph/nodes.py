@@ -72,7 +72,6 @@ def retrieve(state: AgentState):
 
     logger.info(f'======== [NODE][RETRIEVE] Question: {question} ========')
 
-    # 원작자가 커스텀한 클래스 나중에 뜯어서 정리해야 됨.. 일단 임시..
     pdf_retriever = PDFRetrievalChain(search_num=5, source_uris=[pdf_path]).create_chain()
     documents = pdf_retriever.invoke(question)
 
