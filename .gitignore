@@ -5,3 +5,4 @@
 /utils/logger/logger.py
 /vectorstore/data
 /unit_test/data
+/unit_test/result
