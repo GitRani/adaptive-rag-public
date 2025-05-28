@@ -1,4 +1,3 @@
-from utils.utils import load_env
 from utils.logger.logger import setup_logging
 from graph.checkpointer import get_checkpointer_sqlite, get_checkpointer_postgre
 from routers import api
@@ -18,7 +17,7 @@ load_dotenv()
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
 LOG_PATH = os.getenv('LOG_PATH')
-LOG_MAX_BYTES = int(os.getenv('LOG_MAX_BYTES'))
+LOG_MAX_BYTES = os.getenv('LOG_MAX_BYTES')
 LOG_BACKUP_COUNT = int(os.getenv('LOG_BACKUP_COUNT'))
 LOG_INTERVAL = int(os.getenv('LOG_INTERVAL'))
 LOG_WHEN = os.getenv('LOG_WHEN')
