@@ -1,0 +1,14 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+data/
+unit_test/
+*.ipynb
+.git
+.gitignore
+.env
+docker-compose.yml
+*.md
+
