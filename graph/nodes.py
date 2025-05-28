@@ -65,7 +65,7 @@ def retrieve(state: AgentState):
     '''Retrieve한 Document를 반환하는 노드'''
     logger.info('======== [NODE] RETRIEVE ========')
     question = state['question']
-    pdf_path = os.path.join(Path(__file__).parent.parent, "vectorstore", "data", "지방자치단체 산안법 적용 (산재예방정책과-3018 (2018.07.06. 시행).pdf")
+    pdf_path = os.path.join(Path(__file__).parent.parent, "data", "pdf", "지방자치단체 산안법 적용 (산재예방정책과-3018 (2018.07.06. 시행).pdf")
 
     if isinstance(question, AIMessage):
         question = question.content

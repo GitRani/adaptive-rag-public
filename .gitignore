@@ -3,6 +3,4 @@
 /utils/logger/CustomLogHandlerWithFile.py
 /utils/logger/log_manager_file.py
 /utils/logger/logger.py
-/vectorstore/data
-/unit_test/data
-/unit_test/result
+/data
