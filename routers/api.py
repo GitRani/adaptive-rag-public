@@ -9,7 +9,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.post("/generate")
+@router.post("/generateGraph")
 async def generate_graph(human_info: HumanInfo):
     logger.info(f'======== [API] INPUT :: {human_info} ========')
 
@@ -21,3 +21,17 @@ async def generate_graph(human_info: HumanInfo):
     logger.info(f'======== [API] GRAPH RESULT :: \n {graph_result} ========')
 
     return graph_result
+
+
+@router.post("/postgreInsert")
+async def postgre_db_insert(file_path):
+    logger.info(f'======== [API] INPUT :: {file_path} ========')
+    ''
+
+
+@router.post("/keywordSearch")
+async def postgre_db_insert(file_path):
+    logger.info(f'======== [API] INPUT :: {file_path} ========')
+    ''
+
+
