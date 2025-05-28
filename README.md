@@ -7,11 +7,12 @@
 - **참고 코드**: [LangChain-KR Adaptive RAG](https://github.com/teddylee777/langchain-kr/blob/main/17-LangGraph/02-Structures/07-LangGraph-Adaptive-RAG.ipynb)
 - **사용 기술**:
   - FastAPI
-  - LangGraph
+  - LangGraph (+LangGraph Studio)
   - LangSmith
   - LangChain
-  - Milvus (예정)
-  - Docker (예정)
+  - PostgreSQL [FTS]
+  - Milvus
+  - Docker [docker-compose]
 
 ## 필자가 진행/생각한 구축 순서? (정답은 아님..)
 
@@ -66,6 +67,8 @@ unit_test를 하나 파서 Jupyter Notebook에서 단위 테스트를 해놓는 
 ```plaintext
 adaptive-rag-public/
 │
+├── data/                   # docker Volume, file 등
+│  
 ├── routers/                   # FastAPI
 │   ├── api.py
 │
@@ -75,7 +78,7 @@ adaptive-rag-public/
 │
 ├── tools/                    # 외부 도구 관련 (Tavily 등)
 │   ├── __init__.py
-│   ├── web_search.py         # 웹 검색 도구 (Tavily 기반)
+│   ├── search.py         # 웹 검색 도구 (Tavily 기반)
 │
 ├── vectorstore/              # 벡터 DB 관련 (임베딩 및 검색)
 │   ├── __init__.py
@@ -96,10 +99,13 @@ adaptive-rag-public/
 │   ├── return_value_schema.py # 각 노드의 반환 값 스키마
 │
 ├── unit_test/                # Jupyter Notebook Unit Test
-│   ├── test.ipynb
+│   ├── keyword_data_insert.ipynb # PostgreSQL FTS Test
+│   ├── semantic_data_insert.ipynb # Milvus Test
+│   ├── langgraph_chain_test.ipynb # Langgraph Unit Test
 │
 ├── utils/                    # 유틸리티 및 로깅
 │   ├── logger               # 로깅 파일
+│   ├── postgresql.py   # PostgreSQL DB 로직 파일
 │   ├── utils.py             # 로직 파일
 │
 ├── configs/                  # 설정 파일 (모델, 프롬프트 등)
@@ -109,6 +115,7 @@ adaptive-rag-public/
 │
 ├── langgraph.json            # LangGraph Server 실행 정보 (Dependency 등)
 ├── main.py                   # 워크플로우 실행 진입점
+├── docker-compose.yml      # Milvus / PostgreSQL 서버 기동
 └── requirements.txt          # 필요한 패키지 목록
 
 ```
