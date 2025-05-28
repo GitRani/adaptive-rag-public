@@ -70,12 +70,12 @@ langchain-openai==0.3.17
 langchain-teddynote==0.3.45
 langchain-text-splitters==0.3.8
 langgraph==0.4.5
-langgraph-api==0.2.34
+# langgraph-api==0.2.34 # langserve와 충돌 일어남 sse-starlette 요구하는 버전이 다름..
 langgraph-checkpoint==2.0.26
 langgraph-checkpoint-sqlite==2.0.10
 langgraph-cli==0.2.10
 langgraph-prebuilt==0.1.8
-langgraph-runtime-inmem==0.2.0
+# langgraph-runtime-inmem==0.2.0  # langserve와 충돌 일어남 sse-starlette 
 langgraph-sdk==0.1.69
 langserve==0.3.1
 langsmith==0.3.42

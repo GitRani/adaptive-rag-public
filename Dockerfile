@@ -15,7 +15,9 @@ RUN apt-get update && apt-get install -y \
 
 # numpy를 먼저 설치 (의존성 우선순위 때문..)
 RUN pip install --no-cache-dir numpy
-RUN pip install --no-cache-dir sse-starlette==2.1.3
+# langgraph-api 와 langserve 간 의존성 충돌 일어남. langserve만 일단 유지하고 버전 낮춤.
+# RUN pip install --no-cache-dir sse-starlette==2.1.3
+RUN pip install --no-cache-dir sse-starlette==1.8.2
 
 # requirements.txt 복사 후 설치
 COPY requirements.txt .
