@@ -55,6 +55,8 @@ app.include_router(api.router, prefix='/api')
 
 @app.get("/")
 async def main():
+    DB_NAME = os.getenv("POSTGRE_DB_NAME")
+    logger.info(f"Connecting to database: {DB_NAME}")
     return RedirectResponse('/docs')
 
 if __name__ == "__main__":
