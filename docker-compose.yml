@@ -6,13 +6,13 @@ services:
     ports:
       - "${POSTGRE_DB_PORT}:5432"
     environment:
-      POSTGRES_DB: ${POSTGRE_DB_NAME}
-      POSTGRES_USER: ${POSTGRE_DB_USER}
-      POSTGRES_PASSWORD: ${POSTGRE_DB_PASSWORD}
+      POSTGRES_DB: ${POSTGRE_NAME}
+      POSTGRES_USER: ${POSTGRE_USER}
+      POSTGRES_PASSWORD: ${POSTGRE_PASSWORD}
     volumes:
       - ${POSTGRE_DB_VOLUME}:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRE_DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRE_USER}"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -97,11 +97,11 @@ services:
       standalone:
         condition: service_healthy
     environment:
-      POSTGRE_DB_HOST: my-postgres
-      POSTGRE_DB_PORT: ${POSTGRE_DB_PORT}
-      POSTGRE_DB_USER: ${POSTGRE_DB_USER}
-      POSTGRE_PASSWORD: ${POSTGRE_DB_PASSWORD}
-      POSTGRE_DB_PASSWORD: ${POSTGRE_DB_NAME}
+      POSTGRE_HOST: my-postgres
+      POSTGRE_PORT: ${POSTGRE_PORT}
+      POSTGRE_USER: ${POSTGRE_USER}
+      POSTGRE_PASSWORD: ${POSTGRE_PASSWORD}
+      POSTGRE_NAME: ${POSTGRE_NAME}
       MILVUS_HOST: milvus-standalone
       MILVUS_PORT: ${MILVUS_PORT}
       TAVILY_API_KEY: ${TAVILY_API_KEY}
@@ -117,7 +117,7 @@ services:
       LOG_INTERVAL: ${LOG_INTERVAL}
       LOG_LEVEL: ${LOG_LEVEL}
     volumes:
-      - ${FASTAPI_VOLUME}:/app/data
+      - .:/app
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     networks:
       - app_network

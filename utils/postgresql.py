@@ -4,11 +4,11 @@ import pandas as pd
 
 def postgre_db_connect():
     return psycopg2.connect(
-        dbname=os.getenv("POSTGRE_DB_NAME"),
-        user=os.getenv("POSTGRE_DB_USER"),
-        host=os.getenv("POSTGRE_DB_HOST"),
-        port=os.getenv("POSTGRE_DB_PORT"),
-        password=os.getenv("POSTGRE_DB_PASSWORD")
+        dbname=os.getenv("POSTGRE_NAME"),
+        user=os.getenv("POSTGRE_USER"),
+        host=os.getenv("POSTGRE_HOST"),
+        port=os.getenv("POSTGRE_PORT"),
+        password=os.getenv("POSTGRE_PASSWORD")
     )
 
 def query_execute(conn, sql, data_tuple):
@@ -32,7 +32,7 @@ def keyword_refinement(keyword_info):
 
 
 def keyword_search(user_query):
-    get_keyword_sql = "SELECT to_tsvector('korean', %s);"
+    get_keyword_sql = "SELECT to_tsvector('simple', %s);"
     # detail query
     # search_tsvector_sql = '''
     # SELECT TF0.FILE_NM, TF2.cont, TF2.cont_tsvector, ts_rank(cont_tsvector, to_tsquery('korean', %s)) AS rank
@@ -44,9 +44,9 @@ def keyword_search(user_query):
 
     # simple query
     search_tsvector_sql = '''
-    SELECT cont_tsvector, ts_rank(cont_tsvector, to_tsquery('korean', %s)) AS rank
+    SELECT cont_tsvector, ts_rank(cont_tsvector, to_tsquery('simple', %s)) AS rank
     FROM TRAGFILE0102
-    WHERE cont_tsvector @@ to_tsquery('korean', %s);
+    WHERE cont_tsvector @@ to_tsquery('simple', %s);
     '''
 
     conn = postgre_db_connect()
