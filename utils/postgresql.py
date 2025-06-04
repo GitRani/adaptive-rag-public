@@ -1,8 +1,14 @@
 import os
 import psycopg2
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 def postgre_db_connect():
+
+    logger.info(os.getenv("POSTGRE_HOST"))    
+
     return psycopg2.connect(
         dbname=os.getenv("POSTGRE_NAME"),
         user=os.getenv("POSTGRE_USER"),
@@ -10,6 +16,7 @@ def postgre_db_connect():
         port=os.getenv("POSTGRE_PORT"),
         password=os.getenv("POSTGRE_PASSWORD")
     )
+
 
 def query_execute(conn, sql, data_tuple):
     try:
