@@ -3,10 +3,9 @@ import psycopg2
 import pandas as pd
 import logging
 
-
 logger = logging.getLogger(__name__)
 
-def postgre_db_connect():
+def milvus_db_connect():
 
     logger.info(os.getenv("POSTGRE_HOST"))    
 
@@ -41,13 +40,19 @@ def keyword_refinement(keyword_info):
 
 def keyword_search(user_query):
     get_keyword_sql = "SELECT to_tsvector('simple', %s);"
+    # detail query
+    # search_tsvector_sql = '''
+    # SELECT TF0.FILE_NM, TF2.cont, TF2.cont_tsvector, ts_rank(cont_tsvector, to_tsquery('korean', %s)) AS rank
+    # FROM TRAGFILE0102 TF2
+    # INNER JOIN TRAGFILE0100 TF0
+    # ON TF0.FILE_SEQ = TF2.FILE_SEQ
+    # WHERE cont_tsvector @@ to_tsquery('korean', %s);
+    # '''
 
     # simple query
     search_tsvector_sql = '''
-    SELECT TR00.file_seq, TR02.passage_seq, file_nm, cont, page_no_chst, ts_rank(cont_tsvector, to_tsquery('simple', %s)) AS rank
-    FROM TRAGFILE0100 TR00
-    INNER JOIN TRAGFILE0102 TR02 
-    ON TR00.file_seq = TR02.file_seq
+    SELECT cont_tsvector, ts_rank(cont_tsvector, to_tsquery('simple', %s)) AS rank
+    FROM TRAGFILE0102
     WHERE cont_tsvector @@ to_tsquery('simple', %s);
     '''
 
@@ -63,12 +68,11 @@ def keyword_search(user_query):
         print('==== condition ==== :: ', keyword_condition)
 
         result, columns = query_execute(conn, search_tsvector_sql, (keyword_condition, keyword_condition,))
-
         if result is None:
             print("No search result found.")
             return None
 
-        return pd.DataFrame(result, columns=columns).to_dict(orient="records")
+        return pd.DataFrame(result, columns=columns)
     finally:
         conn.close()
         print('DB 연결 종료!')

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from schemas.fastapi_schema import HumanInfo
 from graph.workflow import build_workflow
 from utils.postgresql import keyword_search
+from fastapi.responses import JSONResponse
 
 import uuid
 import logging
@@ -31,7 +32,12 @@ async def postgre_db_insert(file_path):
 
 
 @router.post("/keywordSearch")
-async def postgre_db_insert(user_query):
+async def postgre_db_search(user_query):
+    logger.info(f'======== [API] INPUT :: {user_query} ========')
+    return JSONResponse(content=keyword_search(user_query))
+
+@router.post("/semanticSearch")
+async def milvus_db_search(user_query):
     logger.info(f'======== [API] INPUT :: {user_query} ========')
     return keyword_search(user_query)
 
