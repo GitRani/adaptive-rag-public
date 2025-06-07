@@ -24,8 +24,8 @@ def query_execute(conn, sql, data_tuple):
         with conn.cursor() as cursor:
             cursor.execute(sql, data_tuple)
             result = cursor.fetchall()
-            columns = [desc[0] for desc in cursor.description]
-        return result, columns
+
+        return result
     except Exception as e:
         print(f"Error: {e}")
         conn.rollback()
@@ -53,7 +53,7 @@ def keyword_search(user_query):
 
     conn = postgre_db_connect()
     try:
-        keyword_info, _ = query_execute(conn, get_keyword_sql, (user_query,))
+        keyword_info = query_execute(conn, get_keyword_sql, (user_query,))
         if not keyword_info:
             print("No keyword info found.")
             return None
@@ -62,13 +62,36 @@ def keyword_search(user_query):
         keyword_condition = keyword_refinement(keyword_info)
         print('==== condition ==== :: ', keyword_condition)
 
-        result, columns = query_execute(conn, search_tsvector_sql, (keyword_condition, keyword_condition,))
+
+        
+        result = query_execute(conn, search_tsvector_sql, (keyword_condition, keyword_condition,))
+
+        print(result)
+        
+        json_data = [
+            {
+                "file_seq": data[0],
+                "passage_seq": data[1],
+                "file_name": data[2],
+                "cont": data[3],
+                "page_no_chst": data[4],
+                "score": data[5],
+                "metadata": {
+                    "regist_id": "unknown",
+                    "regist_dt": "",
+                    "modify_dt": ""
+
+                }
+            } 
+        for data in result]
 
         if result is None:
             print("No search result found.")
             return None
+        
+        return json_data
 
-        return pd.DataFrame(result, columns=columns).to_dict(orient="records")
+        # return pd.DataFrame(result, columns=columns).to_dict(orient="records")
     finally:
         conn.close()
         print('DB 연결 종료!')
