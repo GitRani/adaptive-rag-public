@@ -5,6 +5,7 @@ from schemas.fastapi_schema import HumanInfo, SearchInfo, ResponseModel
 from graph.workflow import build_workflow
 from utils.postgresql import keyword_search
 from utils.milvus import semantic_search
+from utils.reranker import rerank_search
 
 import uuid
 import logging
@@ -57,12 +58,12 @@ async def hybrid_db_search(search_info: SearchInfo):
     keyword_json = keyword_search(query, search_num)
     semantic_json = semantic_search(query, search_num)
     
-    if len(keyword_json) + len(semantic_json) == 0:
-        return ResponseModel(success="N", message="검색 결과가 없습니다.")
+    hybrid_search_len = len(keyword_json) + len(semantic_json)
+    if hybrid_search_len == 0:
+        return ResponseModel(success="N", message="검색 결과가 없습니다.", data=[])
     else:
-        json_data = {
-            
-        }
+        logger.info(f'======== [API] SEARCH NUM :: {hybrid_search_len} ========')
+        return ResponseModel(success="Y", message="하이브리드 검색을 완료했습니다.", version="1.0", data=rerank_search(keyword_json, semantic_json, search_num))
 
 
 
