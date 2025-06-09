@@ -4,9 +4,10 @@ from sentence_transformers import SentenceTransformer
 import pandas as pd
 import logging
 import os
-import json
+import torch
 
 logger = logging.getLogger(__name__)
+device = "mps" if torch.backends.mps.is_available() else "cpu"
 
 def milvus_db_connect():
 
@@ -22,7 +23,9 @@ def semantic_search(user_query, search_num):
     json_data = []
     collection_name = "tragfile0102"
     # 1. 텍스트를 벡터로 바꾸기
-    model = SentenceTransformer("BAAI/bge-m3")
+    logger.info(f"MPS Available: {torch.backends.mps.is_available()}")
+    logger.info(f"MPS Built: {torch.backends.mps.is_built()}")
+    model = SentenceTransformer("BAAI/bge-m3", device=device)
     query_vector = model.encode(user_query).tolist()
 
     # 2. milvus 연결

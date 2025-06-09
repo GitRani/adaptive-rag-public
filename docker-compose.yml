@@ -116,6 +116,7 @@ services:
       LOG_WHEN: ${LOG_WHEN}
       LOG_INTERVAL: ${LOG_INTERVAL}
       LOG_LEVEL: ${LOG_LEVEL}
+
     volumes:
       - .:/app
       - ${MODEL_PATH}:/root/.cache/huggingface

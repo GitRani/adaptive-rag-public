@@ -59,11 +59,12 @@ async def hybrid_db_search(search_info: SearchInfo):
     semantic_json = semantic_search(query, search_num)
     
     hybrid_search_len = len(keyword_json) + len(semantic_json)
+    
     if hybrid_search_len == 0:
         return ResponseModel(success="N", message="검색 결과가 없습니다.", data=[])
     else:
         logger.info(f'======== [API] SEARCH NUM :: {hybrid_search_len} ========')
-        return ResponseModel(success="Y", message="하이브리드 검색을 완료했습니다.", version="1.0", data=rerank_search(keyword_json, semantic_json, search_num))
+        return ResponseModel(success="Y", message="하이브리드 검색을 완료했습니다.", version="1.0", data=rerank_search(query, keyword_json, semantic_json, search_num))
 
 
 
