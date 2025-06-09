@@ -1,9 +1,12 @@
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+
 from schemas.fastapi_schema import HumanInfo
 from graph.workflow import build_workflow
 from utils.postgresql import keyword_search
-from fastapi.responses import JSONResponse
-from utils.milvus import *
+from utils.milvus import semantic_search
+
+
 
 import uuid
 import logging
@@ -40,8 +43,5 @@ async def postgre_db_search(user_query):
 @router.post("/semanticSearch")
 async def milvus_db_search(user_query):
     logger.info(f'======== [API] INPUT :: {user_query} ========')
-    mc = milvus_db_connect()
-    print(mc)
-    return "1"
-
+    return semantic_search(user_query)
 
