@@ -4,7 +4,7 @@ from schemas.return_schema import (
     GradeHallucinations, 
     GradeQuestionAnswer    
 )
-from config.model_config import Claude
+from config.model_config import Claude, DeepSeek
 
 from langchain_core.prompts import ChatPromptTemplate, load_prompt
 from langchain_core.output_parsers import StrOutputParser
@@ -20,7 +20,7 @@ def vector_websearch_chain():
             ("human", "{question}")
         ]
     )
-    structed_llm = Claude(schema=RouteQuery).get_structed_model()
+    structed_llm = DeepSeek(schema=RouteQuery).get_structed_model()
     
     return prompt | structed_llm
 
@@ -29,7 +29,7 @@ def vector_websearch_chain():
 def generate_chain():
     prompt = load_prompt(Path(__file__).parent.parent / 'config/prompts/rag-generate-prompt.yaml')
 
-    llm = Claude().get_model()
+    llm = DeepSeek().get_model()
 
     return prompt | llm | StrOutputParser()
 
@@ -44,7 +44,7 @@ def grade_hallucination_chain():
             ("human", "Set of facts: \n\n {documents} \n\n LLM generation: {generation}")
         ]
     )
-    structed_llm = Claude(schema=GradeHallucinations).get_structed_model()
+    structed_llm = DeepSeek(schema=GradeHallucinations).get_structed_model()
 
     return prompt | structed_llm
 
@@ -59,7 +59,7 @@ def grade_answer_chain():
             ("human", "User question: \n\n {question} \n\n LLM generation: {generation}")
         ]
     )
-    structed_llm = Claude(schema=GradeQuestionAnswer).get_structed_model()
+    structed_llm = DeepSeek(schema=GradeQuestionAnswer).get_structed_model()
 
     return prompt | structed_llm
 
@@ -74,7 +74,7 @@ def rewrite_query_chain():
             ("human", "{question}")
         ]
     )
-    llm = Claude().get_model()
+    llm = DeepSeek().get_model()
 
     return prompt | llm
 
@@ -89,7 +89,7 @@ def grade_documents_chain():
             ("human", "Retrieved document: \n\n {document} \n\n User question: {question}")
         ]
     )
-    structed_llm = Claude(schema=GradeDocuments).get_structed_model()
+    structed_llm = DeepSeek(schema=GradeDocuments).get_structed_model()
 
     return prompt | structed_llm
 

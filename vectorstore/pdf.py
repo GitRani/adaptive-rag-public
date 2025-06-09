@@ -70,9 +70,11 @@ class PDFRetrievalChain():
     
 
     def create_chain(self):
+
         docs = self.load_documents(self.source_uris)
         # 여기까지 오면 split_docs에는 쪼개진 텍스트가 리스트 형태로 저장이 된다. 
         # Document 객체의 리스트로 저장됨.
         split_docs = self.split_documents(docs, self.create_text_splitter())
         # 벡터 설정값들을 넣어 준비시킴 (유사도, 10개 검색..)
+
         return self.create_retriever(self.create_vectorstore(split_docs))

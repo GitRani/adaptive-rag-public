@@ -14,6 +14,10 @@
   - Milvus
   - Docker [docker-compose]
 
+- **생성형**:
+  - deepseek-r1:14b (Ollama Local Model)
+  - Claude ($5 limit)
+
 ## 필자가 진행/생각한 구축 순서? (정답은 아님..)
 
 1) 초기 단계
@@ -122,9 +126,6 @@ adaptive-rag-public/
 
 3.
 To-do
-- FAISS -> Milvus 변경
-  ㄴ keyword : postgreSQL FTS, semantic: Milvus
-- Dockerizing (Dockefile, docker-compose)
 - batch structure
 - postgresaver
 - managing message stack (improving state schema)
@@ -139,3 +140,9 @@ Execute Server Info
 
 5. 
 기타 이슈 해결사항은 issue 탭에 게시
+
+
+6. 버전 충돌로 해당 라이브러리는 주석 처리하여 진행
+# langgraph-runtime-inmem==0.2.0
+# langgraph-api==0.2.34
+# sse-starlette==2.1.3

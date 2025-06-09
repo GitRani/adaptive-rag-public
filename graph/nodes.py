@@ -67,6 +67,7 @@ def retrieve(state: AgentState):
     question = state['question']
     pdf_path = os.path.join(Path(__file__).parent.parent, "data", "pdf", "지방자치단체 산안법 적용 (산재예방정책과-3018 (2018.07.06. 시행).pdf")
 
+    # (예외처리) AIMessage 객체면, 그 안의 필드로 들어가 있을 것이므로, content를 참조하게끔 한다.
     if isinstance(question, AIMessage):
         question = question.content
 

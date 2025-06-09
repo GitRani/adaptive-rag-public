@@ -1,5 +1,6 @@
 from utils.logger.logger import setup_logging
 from graph.checkpointer import get_checkpointer_sqlite, get_checkpointer_postgre
+from graph.workflow import build_workflow
 from routers import api
 
 from fastapi import FastAPI, Response
@@ -42,7 +43,7 @@ logger = logging.getLogger(__name__)
 # langgraph.json 있는 위치에서 langgraph dev 시, 서버 실행됨.
 # 추가) langgraph dev는 PostgresSaver를 지원한다고 함. SqliteSaver 쓰지 말자...
 
-# app = build_workflow()
+graph = build_workflow()
 
 # # -------------- 실행 --------------
 # if __name__ == "__main__":
