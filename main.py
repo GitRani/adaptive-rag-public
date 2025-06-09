@@ -2,9 +2,13 @@ from utils.logger.logger import setup_logging
 from graph.checkpointer import get_checkpointer_sqlite, get_checkpointer_postgre
 from routers import api
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.responses import RedirectResponse
+from fastapi.openapi.docs import get_swagger_ui_html
+
 from dotenv import load_dotenv
+from pathlib import Path
+
 
 import uvicorn
 import logging
@@ -50,14 +54,36 @@ logger = logging.getLogger(__name__)
 #     result = app.invoke(initial_input)
 #     # state = app.get_state()
 
-app = FastAPI()
+app = FastAPI(docs_url=None)
 app.include_router(api.router, prefix='/api')
 
 @app.get("/")
 async def main():
-    DB_NAME = os.getenv("POSTGRE_DB_NAME")
-    logger.info(f"Connecting to database: {DB_NAME}")
     return RedirectResponse('/docs')
+
+
+@app.get('/swagger_css')
+def swagger_css():    
+    with open(Path(Path(__file__).parent / "templates" / "swagger" / "swagger-ui.css"),'rt',encoding='utf-8') as f:        
+        swagger_css = f.read()    
+    return Response(swagger_css,headers={"Content-type":"text/css"})
+
+
+@app.get('/swagger_js')
+def swagger_js():   
+    with open(Path(Path(__file__).parent / "templates" / "swagger" /"swagger-ui-bundle.js"),'rt',encoding='utf-8') as f:        
+        swagger_js = f.read()    
+    return Response(swagger_js,headers={"Content-type":"text/javascript"})
+
+
+@app.get("/docs")
+async def custom_swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title="Rani's Swagger",
+        swagger_js_url="/swagger_js",
+        swagger_css_url="/swagger_css"
+    )
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
