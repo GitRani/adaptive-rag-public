@@ -13,16 +13,11 @@ class DeepSeek:
         self.schema = schema
         self.kwargs = kwargs
 
-        try:
-            ollama.list()
-        except Exception as e:
-            raise ValueError("Ollama 서버가 실행 중이 아닙니다.")
-
 
     def get_structed_model(self) -> ChatOllama:
         model = ChatOllama(
             model=self.model_name, 
-            base_url="http://localhost:11434",
+            base_url=os.getenv("OLLAMA_BASE_URL"),
             **self.kwargs    
         )
 
@@ -31,7 +26,7 @@ class DeepSeek:
     def get_model(self) -> ChatOllama:
         model = ChatOllama(
             model=self.model_name, 
-            base_url="http://localhost:11434",
+            base_url=os.getenv("OLLAMA_BASE_URL"),
             **self.kwargs    
         )
 
