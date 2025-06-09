@@ -39,16 +39,17 @@ def keyword_refinement(keyword_info):
     return '&'.join([keyword for keyword in keyword_list if len(keyword) >= 2])
 
 
-def keyword_search(user_query):
+def keyword_search(user_query, search_num):
     get_keyword_sql = "SELECT to_tsvector('simple', %s);"
 
-    # simple query
     search_tsvector_sql = '''
-    SELECT TR00.file_seq, TR02.passage_seq, file_nm, cont, page_no_chst, ts_rank(cont_tsvector, to_tsquery('simple', %s)) AS rank
+    SELECT TR02.id, TR00.file_seq, TR02.passage_seq, file_nm, cont, page_no_chst, ts_rank(cont_tsvector, to_tsquery('simple', %s)) AS rank
     FROM TRAGFILE0100 TR00
     INNER JOIN TRAGFILE0102 TR02 
     ON TR00.file_seq = TR02.file_seq
-    WHERE cont_tsvector @@ to_tsquery('simple', %s);
+    WHERE cont_tsvector @@ to_tsquery('simple', %s)
+    LIMIT %s;
+
     '''
 
     conn = postgre_db_connect()
@@ -64,23 +65,24 @@ def keyword_search(user_query):
 
 
         
-        result = query_execute(conn, search_tsvector_sql, (keyword_condition, keyword_condition,))
+        result = query_execute(conn, search_tsvector_sql, (keyword_condition, keyword_condition, search_num))
 
-        print(result)
+        logger.info(f'======== [Postgres] Results :: {result} ========')
         
         json_data = [
             {
-                "file_seq": data[0],
-                "passage_seq": data[1],
-                "file_name": data[2],
-                "cont": data[3],
-                "page_no_chst": data[4],
-                "score": data[5],
+                "id": data[0],
+                "score": data[6],
+                "file_name": data[3],
+                "content": data[4],
+                "page_numbers": data[5],                
                 "metadata": {
+                    "search_type": "keyword",
+                    "file_seq": data[1],
+                    "passage_seq": data[2],
                     "regist_id": "unknown",
                     "regist_dt": "",
                     "modify_dt": ""
-
                 }
             } 
         for data in result]
@@ -91,7 +93,6 @@ def keyword_search(user_query):
         
         return json_data
 
-        # return pd.DataFrame(result, columns=columns).to_dict(orient="records")
     finally:
         conn.close()
         print('DB 연결 종료!')
