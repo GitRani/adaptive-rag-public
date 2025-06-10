@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 def web_search(human_info: HumanInfo, state: AgentState):
     '''웹 검색을 반환하는 노드'''
     logger.info('======== [NODE] WEB_SEARCH ========')
-    web_search_results = tavily_search(max_results=human_info.retrieve_cnt).invoke(state['question'])
+    web_search_results = tavily_search(max_results=human_info.retrieve_search_cnt).invoke(state['question'])
 
     document_list = [
         Document(
@@ -49,7 +49,7 @@ def generate(state: AgentState):
     generation = generate_chain().invoke({"question": question, "context": documents})
 
     # deepseek 전처리
-    generation = re.sub(r"<think>.*?</think>", "", generation)   
+    generation = re.sub(r"<think>.*?</think>", "", generation, flags=re.DOTALL).strip()
 
     logger.info(f'======== [NODE] GENERATION :: {generation} ========')
     

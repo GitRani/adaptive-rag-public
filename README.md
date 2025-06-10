@@ -12,7 +12,8 @@
   - LangChain
   - PostgreSQL [FTS]
   - Milvus
-  - Docker [docker-compose]
+  - Docker [docker-compose로 FastAPI, PostgreSQL, Milvus 통합]
+  - Ollama (Local LLM)
 
 - **생성형**:
   - deepseek-r1:14b (Ollama Local Model)
@@ -67,7 +68,7 @@ unit_test를 하나 파서 Jupyter Notebook에서 단위 테스트를 해놓는 
 - Docker
 
 
-## 디렉토리 구조 (2025.05.26 기준)
+## 디렉토리 구조 (2025.06.10 기준)
 ```plaintext
 adaptive-rag-public/
 │
@@ -105,11 +106,20 @@ adaptive-rag-public/
 ├── unit_test/                # Jupyter Notebook Unit Test
 │   ├── keyword_data_insert.ipynb # PostgreSQL FTS Test
 │   ├── semantic_data_insert.ipynb # Milvus Test
+│   ├── reranker_data_test.ipynb # Milvus Test
 │   ├── langgraph_chain_test.ipynb # Langgraph Unit Test
+│
+│
+├── templates/                # 정적 파일
+│   ├── static/               # PostgreSQL FTS Test
+│   ├── swagger/              # FastAPI 내부망용 css, js 포함
+│   ├── index.html            # 프론트 템플릿 (미구현)
 │
 ├── utils/                    # 유틸리티 및 로깅
 │   ├── logger               # 로깅 파일
 │   ├── postgresql.py   # PostgreSQL DB 로직 파일
+│   ├── milvus.py             # Milvus DB 로직 파일
+│   ├── reranker.py             # 리랭킹 로직 파일
 │   ├── utils.py             # 로직 파일
 │
 ├── configs/                  # 설정 파일 (모델, 프롬프트 등)
@@ -143,6 +153,9 @@ Execute Server Info
 
 
 6. 버전 충돌로 해당 라이브러리는 주석 처리하여 진행
+
 langgraph-runtime-inmem==0.2.0
+
 langgraph-api==0.2.34
+
 sse-starlette==2.1.3
