@@ -1,6 +1,3 @@
 /.env
-/utils/logger/CustomLogHandler.py
-/utils/logger/CustomLogHandlerWithFile.py
-/utils/logger/log_manager_file.py
-/utils/logger/logger.py
+/utils/logger
 /data

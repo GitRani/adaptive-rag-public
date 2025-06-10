@@ -137,7 +137,7 @@ services:
       LOG_WHEN: ${LOG_WHEN}
       LOG_INTERVAL: ${LOG_INTERVAL}
       LOG_LEVEL: ${LOG_LEVEL}
-      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      # OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
 
     volumes:
       - .:/app

@@ -9,6 +9,9 @@ from chains.rag_chain import (
     rewrite_query_chain,
     grade_documents_chain
 )
+from utils.postgresql import keyword_search
+from utils.milvus import semantic_search
+from utils.reranker import rerank_search
 
 from vectorstore.pdf import PDFRetrievalChain
 from pathlib import Path
@@ -73,15 +76,47 @@ def retrieve(state: AgentState):
 
     logger.info(f'======== [NODE][RETRIEVE] Question: {question} ========')
 
-    pdf_retriever = PDFRetrievalChain(search_num=5, source_uris=[pdf_path]).create_chain()
-    documents = pdf_retriever.invoke(question)
+    # 
+    # pdf_retriever = PDFRetrievalChain(search_num=5, source_uris=[pdf_path]).create_chain()
+    # documents = pdf_retriever.invoke(question)
 
-    # log 확인
-    for idx, doc in enumerate(documents):
-        logger.info(f'[{idx} content] :: {doc}')
-        logger.info('++++++++++++++++++++++++++++++')
+    #
+    keyword_json = keyword_search(question, search_num=3)
+    semantic_json = semantic_search(question, search_num=3)
 
-    return {"documents": documents}
+    hybrid_search_len = len(keyword_json) + len(semantic_json)
+    
+    if hybrid_search_len == 0:
+        return {"documents": []}
+    else:
+        logger.info(f'======== [API] SEARCH NUM :: {hybrid_search_len} ========')
+
+        results = rerank_search(question, keyword_json, semantic_json, search_num=3)
+
+        document_list = [
+            Document(
+                page_content=result["content"],
+                metadata={
+                    "file_name": result["file_name"],
+                    "page_numbers": result["page_numbers"]
+                }
+            )
+            for result in results
+        ]
+
+        return {"documents": document_list}
+
+    # # 
+    # logger.info(f'====== [TYPE OF DOCUMENTS]{type(documents)} ========')
+    # logger.info(f'====== [DOCUMENTS]{documents} ========')
+
+
+    # # log 확인
+    # for idx, doc in enumerate(documents):
+    #     logger.info(f'[{idx} content] :: {doc}')
+    #     logger.info('++++++++++++++++++++++++++++++')
+
+    # return {"documents": documents}
 
 
 def grade_documents(state: AgentState):

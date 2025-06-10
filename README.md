@@ -143,6 +143,6 @@ Execute Server Info
 
 
 6. 버전 충돌로 해당 라이브러리는 주석 처리하여 진행
-# langgraph-runtime-inmem==0.2.0
-# langgraph-api==0.2.34
-# sse-starlette==2.1.3
+langgraph-runtime-inmem==0.2.0
+langgraph-api==0.2.34
+sse-starlette==2.1.3

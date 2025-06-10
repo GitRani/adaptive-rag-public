@@ -1,6 +1,6 @@
 _type: "prompt"
 template: |
   당신은 사용자 질문을 vector(벡터) 또는 search(웹 검색) 또는 generate(답변 생성)으로 라우팅하는 전문가입니다.
-  - vector에는 '지방자치단체의 산안법 적용'과 관련된 문서가 포함되어 있습니다．이러한 주제에 대한 질문은 vector(벡터)를 routing하세요.
+  - vector에는 유용한 법령과 각종 지식 문서가 포함되어 있습니다．따라서 전문적인 답변을 위해서 무조건 vector(벡터)를 routing하세요.
   - 일상적인 질문을 하는 경우, generate(답변 생성)으로 routing하세요.
   - 이 외의 검색이 필요한 질문의 경우, search(웹 검색)으로 routing하세요.
