@@ -20,7 +20,7 @@ async def generate_graph(human_info: HumanInfo):
 
     workflow = build_workflow()
     config = {"configurable": {"thread_id": uuid.uuid4()}}
-    initial_input = {"question": human_info.query}
+    initial_input = {"question": human_info.query, "search_num": human_info.retrieve_search_cnt}
     graph_result = workflow.invoke(initial_input)
 
     logger.info(f'======== [API] GRAPH RESULT :: \n {graph_result} ========')

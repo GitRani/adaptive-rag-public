@@ -18,6 +18,7 @@ from pathlib import Path
 
 import os
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,11 @@ def generate(state: AgentState):
     documents = state.get('documents', '')
 
     generation = generate_chain().invoke({"question": question, "context": documents})
+
+    # deepseek 전처리
+    generation = re.sub(r"<think>.*?</think>", "", generation)   
+
+    logger.info(f'======== [NODE] GENERATION :: {generation} ========')
     
     return {
         "generate_message": generation,
@@ -60,6 +66,8 @@ def transform_query(state: AgentState):
     question = state['question']
 
     improv_question = rewrite_query_chain().invoke({"question": question})
+
+    logger.info(f'======== [NODE] IMPROVED QUERY :: {improv_question}========')
 
     return {"question": improv_question}
 
@@ -76,11 +84,10 @@ def retrieve(state: AgentState):
 
     logger.info(f'======== [NODE][RETRIEVE] Question: {question} ========')
 
-    # 
+    # PDFRetrieval 사용 시 해제 (지금은 쓰지 않음)
     # pdf_retriever = PDFRetrievalChain(search_num=5, source_uris=[pdf_path]).create_chain()
     # documents = pdf_retriever.invoke(question)
 
-    #
     keyword_json = keyword_search(question, search_num=3)
     semantic_json = semantic_search(question, search_num=3)
 
@@ -104,19 +111,9 @@ def retrieve(state: AgentState):
             for result in results
         ]
 
+        logger.info(f'====== [DOCUMENTS]{document_list} ========')
+
         return {"documents": document_list}
-
-    # # 
-    # logger.info(f'====== [TYPE OF DOCUMENTS]{type(documents)} ========')
-    # logger.info(f'====== [DOCUMENTS]{documents} ========')
-
-
-    # # log 확인
-    # for idx, doc in enumerate(documents):
-    #     logger.info(f'[{idx} content] :: {doc}')
-    #     logger.info('++++++++++++++++++++++++++++++')
-
-    # return {"documents": documents}
 
 
 def grade_documents(state: AgentState):

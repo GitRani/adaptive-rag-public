@@ -3,7 +3,8 @@ from typing import List, Any, Optional
 
 class HumanInfo(BaseModel):
     query: str
-    retrieve_cnt: int
+    retrieve_limit_cnt: int
+    retrieve_search_cnt: int
 
 class SearchInfo(BaseModel):
     query: str

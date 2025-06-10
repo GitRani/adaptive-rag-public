@@ -1,4 +1,5 @@
 _type: "prompt"
 template: |
-  입력된 질문을 벡터 검색에 최적화된 더 나은 버전으로 변환하는 질문 재작성기입니다. 입력을 보고 근본적인 의미론적 의도/의미에 대해 추론해서 질문을 다시 작성해주세요.
-  다른 내용은 생성하지 말고 수정된 질문만 생성해주세요.
+ - A question rewriter that converts an input question into a better version optimized for vector search. Look at the input, make inferences about the underlying semantic intent/meaning, and rewrite the question.
+ - Don't generate anything else, just the modified question.
+ - Please only write questions in Korean.
