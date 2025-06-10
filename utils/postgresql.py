@@ -1,7 +1,10 @@
+from langgraph.checkpoint.postgres import PostgresSaver
+
 import os
-import psycopg2
+import psycopg
 import pandas as pd
 import logging
+
 
 
 logger = logging.getLogger(__name__)
@@ -10,13 +13,23 @@ def postgre_db_connect():
 
     logger.info(os.getenv("POSTGRE_HOST"))    
 
-    return psycopg2.connect(
+    return psycopg.connect(
         dbname=os.getenv("POSTGRE_NAME"),
         user=os.getenv("POSTGRE_USER"),
         host=os.getenv("POSTGRE_HOST"),
         port=os.getenv("POSTGRE_PORT"),
         password=os.getenv("POSTGRE_PASSWORD")
     )
+
+# PostresSaver 전용
+def postgres_saver_setup(conn):
+    conn.autocommit = True
+    with conn.cursor() as cur:
+        cur.execute("DROP TABLE IF EXISTS checkpoints, checkpoint_blobs, checkpoint_writes, checkpoint_migrations CASCADE")
+    checkpointer = PostgresSaver(conn)
+    # 관련 테이블 생성 
+    checkpointer.setup()
+    return checkpointer
 
 
 def query_execute(conn, sql, data_tuple):

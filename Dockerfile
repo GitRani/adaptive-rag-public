@@ -3,13 +3,13 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-
-
 # 확장 코드 추가 빌드
 RUN apt-get update && apt-get install -y \
     g++ \
     cmake \
     python3-dev \
+    libpq-dev \
+    gcc \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 # 시스템 의존성 설치

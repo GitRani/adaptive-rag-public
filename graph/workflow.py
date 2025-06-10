@@ -23,9 +23,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # 나중에 memorysaver postgre 용 추가 예정
-def build_workflow():
-    # server 사용 시에는 MemorySaver가 제한됨.
-    memory = MemorySaver()
+def build_workflow(checkpointer):
     workflow = StateGraph(AgentState)
 
     workflow.add_node("web_search", web_search)
@@ -66,7 +64,10 @@ def build_workflow():
     )
 
     # return workflow.compile(checkpointer=memory)
-    return workflow.compile()
+    if checkpointer == '':
+        return workflow.compile()
+    else:
+        return workflow.compile(checkpointer=checkpointer)
 
 
 

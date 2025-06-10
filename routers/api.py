@@ -3,12 +3,13 @@ from fastapi.responses import JSONResponse
 
 from schemas.fastapi_schema import HumanInfo, SearchInfo, ResponseModel
 from graph.workflow import build_workflow
-from utils.postgresql import keyword_search
+from utils.postgresql import keyword_search, postgre_db_connect, postgres_saver_setup
 from utils.milvus import semantic_search
 from utils.reranker import rerank_search
 
 import uuid
 import logging
+import psycopg
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -17,12 +18,27 @@ logger = logging.getLogger(__name__)
 @router.post("/generateGraph", tags=["GraphUnitTest"])
 async def generate_graph(human_info: HumanInfo):
     logger.info(f'======== [API] INPUT :: {human_info} ========')
+    try:
+        conn = postgre_db_connect()
+        logger.info("======== [API] PostgreSQL connection successful ========")
 
-    workflow = build_workflow()
+        checkpointer = postgres_saver_setup(conn)
+
+        logger.info("======== [API] PostgreSQL saver setup successful ========")
+        
+        workflow = build_workflow(checkpointer=checkpointer)
+
+        logger.info("======== [API] building workflow successful ========")
+
+    except Exception as e:
+        print(f"Connection failed: {e}")
+        raise
+
     config = {"configurable": {"thread_id": uuid.uuid4()}}
     initial_input = {"question": human_info.query, "search_num": human_info.retrieve_search_cnt}
-    graph_result = workflow.invoke(initial_input)
 
+    graph_result = workflow.invoke(initial_input, config=config)
+    
     logger.info(f'======== [API] GRAPH RESULT :: \n {graph_result} ========')
 
     return ResponseModel(success=True, message="그래프를 성공적으로 실행했습니다", version="1.0", data=graph_result)
