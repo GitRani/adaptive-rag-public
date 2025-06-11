@@ -12,6 +12,7 @@
   - LangChain
   - PostgreSQL [FTS]
   - Milvus
+  - Tavily
   - Docker [docker-compose로 FastAPI, PostgreSQL, Milvus 통합]
   - Ollama (Local LLM)
 
