@@ -1,6 +1,5 @@
 from utils.logger.logger import setup_logging
 from utils.postgresql import postgre_db_connect, postgres_saver_setup
-from graph.checkpointer import get_checkpointer_sqlite, get_checkpointer_postgre
 from graph.workflow import build_workflow
 from routers import api
 
@@ -48,15 +47,6 @@ checkpointer = postgres_saver_setup(conn)
 graph = build_workflow(checkpointer=checkpointer)
 
 # # -------------- 실행 --------------
-# if __name__ == "__main__":
-#     # 체크포인터 나중에 설정 예정
-#     # config = {"configurable": {"thread_id": uuid.uuid4()}}
-#     initial_input = {"question": '''현업의 업종을 판단할 때 공무직 및 공공근로 등 단기간 근로자를 포함하여 채용인원이 가장 많은 상위 2~3개 부서의 현업업무의 업종을 주된 업종으로 판단하여 산업안전보건법을 적용 가능한지?'''}  
-
-#     logger.info("워크플로우 실행 시작")
-#     result = app.invoke(initial_input)
-#     # state = app.get_state()
-
 app = FastAPI(docs_url=None)
 app.include_router(api.router, prefix='/api')
 

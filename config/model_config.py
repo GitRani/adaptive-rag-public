@@ -6,7 +6,7 @@ from pydantic import BaseModel
 import ollama
 import os
 
-class DeepSeek:
+class Ollama:
     def __init__(self, schema: BaseModel = None, model_name: str = "deepseek-r1:14b", temperature: int = 0, **kwargs):
         self.model_name = model_name
         self.temperature = temperature

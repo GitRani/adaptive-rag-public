@@ -4,6 +4,8 @@
 이 프로젝트는 Adaptive RAG(Retrieval-Augmented Generation) 구현을 위한 실습 프로젝트입니다. 
 다양한 기술 스택을 활용하여 워크플로우를 구성하며, LangGraph를 중심으로 RAG 체인을 구현합니다.
 
+![Logo](templates/static/adaptive-rag.png)
+
 - **참고 코드**: [LangChain-KR Adaptive RAG](https://github.com/teddylee777/langchain-kr/blob/main/17-LangGraph/02-Structures/07-LangGraph-Adaptive-RAG.ipynb)
 - **사용 기술**:
   - FastAPI
