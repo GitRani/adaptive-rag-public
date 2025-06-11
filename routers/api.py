@@ -34,8 +34,22 @@ async def generate_graph(human_info: HumanInfo):
         print(f"Connection failed: {e}")
         raise
 
-    config = {"configurable": {"thread_id": uuid.uuid4()}}
-    initial_input = {"question": human_info.query, "search_num": human_info.retrieve_search_cnt}
+    if human_info.memory:
+        config = {"configurable": {"thread_id": "fixed-thread-id"}}
+    else:
+        config = {"configurable": {"thread_id": uuid.uuid4()}}
+    
+    # 중복된 부분 해소해야 됨. 소스코드 수정 많이 해야 되어서 일단 내버려 둠.
+    initial_input = {
+        "question": human_info.query, 
+        "search_num": human_info.retrieve_search_cnt,
+        "human_info": {
+            "query": human_info.query,
+            "retrieve_limit_cnt": human_info.retrieve_limit_cnt,
+            "retrieve_search_cnt": human_info.retrieve_search_cnt,
+            "memory": True
+         }
+    }
 
     graph_result = workflow.invoke(initial_input, config=config)
     

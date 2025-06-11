@@ -5,6 +5,7 @@ class HumanInfo(BaseModel):
     query: str
     retrieve_limit_cnt: int
     retrieve_search_cnt: int
+    memory: bool
 
 class SearchInfo(BaseModel):
     query: str

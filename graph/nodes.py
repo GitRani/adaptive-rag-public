@@ -22,10 +22,10 @@ import re
 
 logger = logging.getLogger(__name__)
 
-def web_search(human_info: HumanInfo, state: AgentState):
+def web_search(state: AgentState):
     '''웹 검색을 반환하는 노드'''
     logger.info('======== [NODE] WEB_SEARCH ========')
-    web_search_results = tavily_search(max_results=human_info.retrieve_search_cnt).invoke(state['question'])
+    web_search_results = tavily_search(max_results=state['human_info']['retrieve_search_cnt']).invoke(state['question'])
 
     document_list = [
         Document(
