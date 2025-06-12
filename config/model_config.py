@@ -17,6 +17,7 @@ class Ollama:
     def get_structed_model(self) -> ChatOllama:
         model = ChatOllama(
             model=self.model_name, 
+            temperature=self.temperature,
             base_url=os.getenv("OLLAMA_BASE_URL"),
             **self.kwargs    
         )
@@ -26,6 +27,7 @@ class Ollama:
     def get_model(self) -> ChatOllama:
         model = ChatOllama(
             model=self.model_name, 
+            temperature=self.temperature,
             base_url=os.getenv("OLLAMA_BASE_URL"),
             **self.kwargs    
         )
